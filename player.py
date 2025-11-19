@@ -19,7 +19,7 @@ In the other case it changes the player room and print the new room's descriptio
     move(self, direction): Return False if there is no room into this direction and return if there is a room
 
 Examples:
->>> player1 = "Anh Koi"
+>>> player1 = "Anh Khoi"
 
 Curent_room 
 >>> Curent_room = None
