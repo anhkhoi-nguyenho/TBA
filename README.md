@@ -1,16 +1,13 @@
-# TBA
+# TBA - Experimental
 
-Ce repo contient la première version (minimale) du jeu d’aventure TBA.
+Cette branche est une version expérimentale de la branche principale (main).
+Cette branche ne sera jamais fusionnée avec aucune autre branche.
 
-Les lieux sont au nombre de 6. Il n'y a pas encore d’objets ni de personnages autres que le joueur et très peu d’interactions. Cette première version sert de base à ce qui va suivre, et sera améliorée au fur et à mesure.
+Elle a pour but de tester les changements majeurs des programmes sans faire courir aucun risque aux branches de développement principales.
 
 
-## Structuration
+This branch is an experimental version of the main branch.
+It will never be merged into any other branch.
 
-Il y a pour le moment 5 modules contenant chacun une classe.
+It is intended to test major program changes without posing any risk to the main development branches
 
-- `game.py` / `Game` : description de l'environnement, interface avec le joueur ;
-- `room.py` / `Room` : propriétés génériques d'un lieu  ;
-- `player.py` / `Player` : le joueur ;
-- `command.py` / `Command` : les consignes données par le joueur ;
-- `actions.py` / `Action` : les interactions entre .
