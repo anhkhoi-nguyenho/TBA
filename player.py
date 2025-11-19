@@ -1,6 +1,29 @@
 # Define the Player class.
-class Player():
 
+class Player():
+"""
+This class is used to create a player,
+In a first time it memorizes the player name,
+Next, it indicates it doesn't have room yet
+After it defines the way the player move and looks for the next room it will go
+If there's no exit -> send an error message("Aucune porte dans cette direction !") and return False
+In the other case it changes the player room and print the new room's description
+
+
+ Attributes:
+    Name (str): The name of the player
+    Current_room(Room): The  room where the player is 
+ 
+ Method:
+    __init__(self, name): The constructor
+    move(self, direction): Return False if there is no room into this direction and return if there is a room
+
+Examples:
+>>> player1 = "Anh Koi"
+
+Curent_room 
+>>> Curent_room = None
+ """
     # Define the constructor.
     def __init__(self, name):
         self.name = name
