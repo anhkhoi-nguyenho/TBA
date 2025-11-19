@@ -2,7 +2,7 @@
 
 class Room:
     """
-    This class is used to define differents places in the game.
+    This class is used to define different places in the game.
     Each place is identified by its name.
     A description about the place is also given.
     This class also defines adjacently connected places.
