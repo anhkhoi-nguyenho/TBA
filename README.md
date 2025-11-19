@@ -5,7 +5,7 @@ Cette branche ne sera jamais fusionnée avec aucune autre branche.
 
 Elle a pour but de tester les changements majeurs des programmes sans faire courir aucun risque aux branches de développement principales.
 
-===========================================================================================
+===========================================================================
 
 This branch is an experimental version of the main branch.
 It will never be merged into any other branch.
