@@ -21,7 +21,21 @@ class Actions:
     def go(game, list_of_words, number_of_parameters):
         """
         Move the player in the direction specified by the parameter.
-        The parameter must be a cardinal direction (N, E, S, O).
+        The parameter must be a direction defined as follow (F, B, R, L, U, D, O, I, En, Ex, N ).
+        F = foward
+        B = back
+        R = right
+        L = left
+        U = upstairs
+        D = downstairs
+        O = outside
+        I = inside
+        En = enter
+        Ex = exit
+        N = next building/room
+
+
+
 
         Args:
             game (Game): The game object.
