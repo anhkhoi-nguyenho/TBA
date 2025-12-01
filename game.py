@@ -30,27 +30,69 @@ class Game:
         
         # Setup rooms
 
-        forest = Room("Forest", "une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
-        self.rooms.append(forest)
-        tower = Room("Tower", "une immense tour en pierre qui s'élève au dessus des nuages.")
-        self.rooms.append(tower)
-        cave = Room("Cave", "une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
-        self.rooms.append(cave)
-        cottage = Room("Cottage", "un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
-        self.rooms.append(cottage)
-        swamp = Room("Swamp", "un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
-        self.rooms.append(swamp)
-        castle = Room("Castle", "un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
-        self.rooms.append(castle)
+        #forest = Room("Forest", "une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
+        #self.rooms.append(forest)
+        #tower = Room("Tower", "une immense tour en pierre qui s'élève au dessus des nuages.")
+        #self.rooms.append(tower)
+        #cave = Room("Cave", "une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
+        #self.rooms.append(cave)
+        #cottage = Room("Cottage", "un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
+        #self.rooms.append(cottage)
+        #swamp = Room("Swamp", "un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
+        #self.rooms.append(swamp)
+        #castle = Room("Castle", "un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
+        #self.rooms.append(castle)
+        house = Room("House", "the hero's house") 
+        #self.rooms.append(house)
+        library = Room("Library", "a room with boocks in the hero's house")
+        #self.rooms.append(library)
+        boockcase = Room("Boockcase", "a boockcase in the library")
+        #self.rooms.append(boockcase)
+        drawer = Room("Drawer", "a drawer of a desk in the library")
+        #self.rooms.append(drawer)
+        bar = Room("Bar", "the Rainhood main bar")
+        #self.rooms.append(bar)
+        bridge = Room("Bridge", "the bridge where they found the Sarah's lifeless body" )
+        #self.rooms.append(bridge)
+        shoes_shop = Room("Shoes shop", "the hugest shoes shop of Rainhood")
+        #self.rooms.append(shoes_shop)
+        neighbour_s_house = Room("Neighbour's house", "the house of the neighbours of the hero")
+        #self.rooms.append(neighbour_s_house)
+        park = Room("Park","the local park")
+        #self.rooms.append(park)
+        police_station = Room("Police station","police station of Rainhood")
+        #self.rooms.append(police_station)
+        archives = Room("Archives", "national archives")
+        #self.rooms.append(archives)
+        doctor_s_surgery = Room("Doctor's surgery","the surgery of the former Eric's psychiatrist ")
+        #self.rooms.append(doctor_s_surgery)
+        abandoned_hotel = Room("Abandoned hotel","hotel where the couple did its honeymoon")
+        #self.rooms.append(abandoned_hotel)
+        train_station = Room("Train station","the Rainhood's train station")
+        #self.rooms.append(train_station)
+        psychiatric_hospital = Room("Psychiatric hospital", "the Rainhood's psychiatric hospital")
+        #self.rooms.append(psychiatric_hospital)
+
 
         # Create exits for rooms
 
-        forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
-        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
-        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
-        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
+        #forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None}
+        #tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}
+        #cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
+        #cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
+        #swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
+        #castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
+        house.exits = {}
+        bar.exits = {}
+        bridge.exits = {}
+        shoes_shop.exits = {}
+        park.exits = {}
+        police_station.exits = {}
+        archives.exits = {}
+        doctor_s_surgery.exits = {}
+        abandoned_hotel.exits = {}
+        train_station.exits = {}
+        psychiatric_hospital.exits = {}
 
         # Setup player and starting room
 
