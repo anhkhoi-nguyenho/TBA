@@ -46,10 +46,6 @@ class Game:
         #self.rooms.append(house)
         library = Room("Library", "a room with boocks in the hero's house")
         #self.rooms.append(library)
-        boockcase = Room("Boockcase", "a boockcase in the library")
-        #self.rooms.append(boockcase)
-        drawer = Room("Drawer", "a drawer of a desk in the library")
-        #self.rooms.append(drawer)
         bar = Room("Bar", "the Rainhood main bar")
         #self.rooms.append(bar)
         bridge = Room("Bridge", "the bridge where they found the Sarah's lifeless body" )
@@ -97,7 +93,7 @@ class Game:
         # Setup player and starting room
 
         self.player = Player(input("\nEntrez votre nom: "))
-        self.player.current_room = swamp
+        self.player.current_room = house
 
     # Play the game
     def play(self):
