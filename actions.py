@@ -52,7 +52,7 @@ class Actions:
         >>> game.setup()
         >>> go(game, ["go", "N"], 1)
         True
-        >>> go(game, ["go", "N", "Ex"], 1)
+        >>> go(game, ["go", "N", "E"], 1)
         False
         >>> go(game, ["go"], 1)
         False
@@ -94,7 +94,7 @@ class Actions:
         True
         >>> quit(game, ["quit", "N"], 0)
         False
-        >>> quit(game, ["quit", "N", "Ex"], 0)
+        >>> quit(game, ["quit", "N", "E"], 0)
         False
 
         """
@@ -133,7 +133,7 @@ class Actions:
         True
         >>> help(game, ["help", "N"], 0)
         False
-        >>> help(game, ["help", "N", "Ex"], 0)
+        >>> help(game, ["help", "N", "E"], 0)
         False
 
         """
