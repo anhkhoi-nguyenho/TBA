@@ -68,6 +68,11 @@ class Game:
         #self.rooms.append(train_station)
         psychiatric_hospital = Room("Psychiatric hospital", "the Rainhood's psychiatric hospital")
         #self.rooms.append(psychiatric_hospital)
+        street1 = Room("Street1", "Street in fornt of the hero's house")
+        #self.rooms.append(stree1)
+        street2 = Room("Street2", "Street2 foward the bridge")
+        #self.rooms.append(Street2)
+        street3 = Room("Street3", "Street at the left od the bridge")
 
 
         # Create exits for rooms
@@ -78,17 +83,21 @@ class Game:
         #cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
         #swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
         #castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
-        house.exits = {}
-        bar.exits = {}
-        bridge.exits = {}
-        shoes_shop.exits = {}
-        park.exits = {}
-        police_station.exits = {}
-        archives.exits = {}
-        doctor_s_surgery.exits = {}
-        abandoned_hotel.exits = {}
-        train_station.exits = {}
-        psychiatric_hospital.exits = {}
+        house.exits = {"B": None, "F": neighbour_s_house, "L": None, "R": street1,}
+        neighbour_s_house = {"B": house, "F": street3, "L": None, "R": None}
+        street1.exits = {"B": None, "F": bar, "L": house, "R": None}
+        bar.exits = {"B": street1, "F": bridge, "L": None, "R": None}
+        bridge.exits = {"B": bar, "F": street2, "L": street3, "R": abandoned_hotel}
+        street2 = {"B": bridge, "F": police_station, "L": park, "R": shoes_shop}
+        street3 = {"B": None, "F":park,"L": neighbour_s_house, "R": bridge}
+        shoes_shop.exits = {"B": abandoned_hotel,"F": doctor_s_surgery, "L": street2, "R":None}
+        park.exits = {"B": street3, "F": police_station,"L": None, "R": street2}
+        police_station.exits = {"B": street2, "F": train_station, "L": park, "R": doctor_s_surgery}
+        archives.exits = {"B": psychiatric_hospital, "F": None, "L": None, "R": None}
+        doctor_s_surgery.exits = {"B": shoes_shop, "F": psychiatric_hospital, "L": police_station, "R": None}
+        abandoned_hotel.exits = {"B": doctor_s_surgery, "F": archives, "L": train_station, "R": None}
+        train_station.exits = {"B": police_station, "F": None, "L": None, "R": None}
+        psychiatric_hospital.exits = {"B": doctor_s_surgery, "F": archives, "L": train_station, "R": None}
 
         # Setup player and starting room
 
