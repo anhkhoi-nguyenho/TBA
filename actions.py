@@ -29,10 +29,6 @@ class Actions:
         U = upstairs
         D = downstairs
 
-
-
-
-
         Args:
             game (Game): The game object.
             list_of_words (list): The list of words in the command.
@@ -67,6 +63,7 @@ class Actions:
         direction = list_of_words[1]
         # Move the player in the direction specified by the parameter.
         player.move(direction)
+        print(player.get_history())
         return True
 
     def quit(game, list_of_words, number_of_parameters):
