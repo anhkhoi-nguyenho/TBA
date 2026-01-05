@@ -130,6 +130,47 @@ class Actions:
         False
 
         """
+    def history(game, list_of_words, number_of_parameters):
+        """
+        Affiche l'historique des pièces visitées par le joueur.
+        """
+        # Vérifier que la commande n'a pas de paramètre supplémentaire
+        if len(list_of_words) != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+
+        # Afficher l'historique via la méthode du Player          
+        print(game.player.get_history())
+        return True
+
+    def back(game, list_of_words, number_of_parameters):
+        """
+        Permet au joueur de revenir à la pièce précédente.
+        """
+        # Vérification du nombre de paramètres
+        if len(list_of_words) != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+
+        player = game.player
+        # Vérifier si l'historique contient au moins une pièce
+        if not player.history:
+            print("\nAucune pièce précédente.\n")
+            return False
+        
+        # Revenir à la pièce précédente
+        player.current_room = player.history.pop()  # récupère la dernière pièce visitée
+        print(player.current_room.get_long_description())  # description de la nouvelle pièce
+        
+        # Afficher l'historique mis à jour
+        print(player.get_history())
+        return True
+
+
+
+
 
         # If the number of parameters is incorrect, print an error message and return False.
         l = len(list_of_words)
