@@ -55,9 +55,9 @@ class Player():
         and includes the current room as the last entry when available.
         """
         if self.history == []:
-            return "\nAucun historique disponible.\n"
+            return "\nNo history available.\n"
 
-        s = "\nVous avez visité les pièces suivantes :\n"
+        s = "\nYou have visited the following rooms:\n"
         for room in self.history:
             s += "\t- {}\n".format(room.description)
         return s
