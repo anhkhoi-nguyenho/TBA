@@ -28,6 +28,7 @@ class Player():
         self.name = name
         self.current_room = None
         self.history = []
+        self.inventory = None
     
     # Define the move method.
     def move(self, direction):
