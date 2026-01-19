@@ -100,7 +100,7 @@ class Actions:
         
         # Set the finished attribute of the game object to True.
         player = game.player
-        msg = f"\nMerci {player.name} d'avoir joué. Au revoir.\n"
+        msg = f"\nThank you, {player.name}, for playing this game. Good Bye !\n"
         print(msg)
         game.finished = True
         return True
@@ -130,6 +130,21 @@ class Actions:
         False
 
         """
+
+        # If the number of parameters is incorrect, print an error message and return False.
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        # Print the list of available commands.
+        print("\nVoici les commandes disponibles:")
+        for command in game.commands.values():
+            print("\t- " + str(command))
+        print()
+        return True
+
     def history(game, list_of_words, number_of_parameters):
         """
         Affiche l'historique des pièces visitées par le joueur.
@@ -167,21 +182,16 @@ class Actions:
         # Afficher l'historique mis à jour
         print(player.get_history())
         return True
+    
 
+    def look(game, list_of_words, number_of_parameters):
 
-
-
-
-        # If the number of parameters is incorrect, print an error message and return False.
         l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
             print(MSG0.format(command_word=command_word))
             return False
-        
-        # Print the list of available commands.
-        print("\nVoici les commandes disponibles:")
-        for command in game.commands.values():
-            print("\t- " + str(command))
-        print()
-        return True
+
+        current_room_inventory = game.player.current_room.inventory
+        print(current_room_inventory.get_inventory(0))    # Reminder : 0 = room; 1 = player
