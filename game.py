@@ -25,7 +25,7 @@ class Game:
         self.commands["help"] = help
         quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
         self.commands["quit"] = quit
-        go = Command("go", " <direction> : se déplacer dans une direction (F, B, R, L, U, D)", Actions.go, 1)
+        go = Command("go", " <direction> : se déplacer dans une direction (F, B, R, L, I, O)", Actions.go, 1)
         self.commands["go"] = go
         history = Command("history", " : afficher l'historique des pièces visitées", Actions.history, 0)
         self.commands["history"] = history
@@ -77,105 +77,144 @@ class Game:
             "B": None, 
             "F": neighbour_s_house, 
             "L": None, 
-            "R": street1
+            "R": street1,
+            "I": library,
+            "O": None
         }
         
+        library.exits = {
+            "B": None,
+            "F": None,
+            "L": None,
+            "R": None,
+            "I": None,
+            "O": house
+        }
+
         neighbour_s_house.exits = {
             "B": house, 
             "F": street3, 
             "L": None, 
-            "R": None
+            "R": None,
+            "I": None,
+            "O": None
         }
         
         street1.exits = {
             "B": None, 
             "F": bar, 
             "L": house, 
-            "R": None
+            "R": None,
+            "I": None,
+            "O": None
         }
         
         bar.exits = {
             "B": street1, 
             "F": bridge, 
             "L": None, 
-            "R": None
+            "R": None,
+            "I": None,
+            "O": None
         }
         
         bridge.exits = {
             "B": bar, 
             "F": street2, 
             "L": street3, 
-            "R": abandoned_hotel
+            "R": abandoned_hotel,
+            "I": None,
+            "O": None
         }
         
         street2.exits = {
             "B": bridge, 
             "F": police_station, 
             "L": park, 
-            "R": shoes_shop
+            "R": shoes_shop,
+            "I": None,
+            "O": None
         }
         
         street3.exits = {
             "B": None, 
             "F":park,
             "L": neighbour_s_house,
-             "R": bridge
+            "R": bridge,
+            "I": None,
+            "O": None
         }
         
         shoes_shop.exits = {
             "B": abandoned_hotel,
             "F": doctor_s_surgery, 
             "L": street2, 
-            "R":None
+            "R": None,
+            "I": None,
+            "O": None
         }
 
         park.exits = {
             "B": street3, 
             "F": police_station,
             "L": None, 
-            "R": street2
+            "R": street2,
+            "I": None,
+            "O": None
         }
 
         police_station.exits = {
             "B": street2, 
             "F": train_station, 
             "L": park, 
-            "R": doctor_s_surgery
+            "R": doctor_s_surgery,
+            "I": None,
+            "O": None
         }
 
         archives.exits = {
             "B": psychiatric_hospital, 
             "F": None, 
             "L": None, 
-            "R": None
+            "R": None,
+            "I": None,
+            "O": None
         }
         
         doctor_s_surgery.exits = {
             "B": shoes_shop, 
             "F": psychiatric_hospital, 
             "L": police_station, 
-            "R": None
+            "R": None,
+            "I": None,
+            "O": None
         }
         
         abandoned_hotel.exits = {
             "B": doctor_s_surgery, 
             "F": archives, 
             "L": train_station, 
-            "R": None
+            "R": None,
+            "I": None,
+            "O": None
         }
         
         train_station.exits = {
             "B": police_station, 
             "F": None, 
             "L": None, 
-            "R": None
+            "R": None,
+            "I": None,
+            "O": None
         }
         
         psychiatric_hospital.exits = {
             "B": doctor_s_surgery, 
             "F": archives, 
             "L": train_station, 
-            "R": None
+            "R": None,
+            "I": None,
+            "O": None
         }
 
         # Setup player and starting room
