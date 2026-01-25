@@ -34,12 +34,16 @@ class Game:
         self.commands["back"] = back
         look = Command("look", " : observe the room", Actions.look, 0)
         self.commands["look"] = look
-        take = Command("take", " <item> : item to put into your bag", Actions.take, 1)
+        take = Command("take", " <item> : put item into your bag", Actions.take, 1)
         self.commands["take"] = take
-        drop = Command("drop", " <item> : item to get out of your bag", Actions.drop, 1)
+        drop = Command("drop", " <item> : get item out of your bag", Actions.drop, 1)
         self.commands["drop"] = drop
         check = Command("check", " : check for items in your bag", Actions.check, 0)
         self.commands["check"] = check
+        read = Command("read", " <item> : read item", Actions.read, 1)
+        self.commands["read"] = read
+        compare = Command("compare", " <item 1> and <item 2> : compare biometrics data on item 1 and item 2", Actions.compare, 2)
+        self.commands["compare"] = compare
         
         # Setup rooms
 
@@ -81,17 +85,17 @@ class Game:
         """
 
         # Create different items
-        Sarah_Journey = Item("Sarah's journey", "A personal journey of Sarah", weight=8, category=0)
+        Sarah_Journey = Item("Sarah's journey", "A personal journey of Sarah", weight=8)
         Sarah_Journey.text = "1/12/1999 - Eric was made, his condition has worsened since our last conversation"
-        HiddenItem1 = Item("Hidden letter", "A hidden letter", weight=0.018, category=1)
+        HiddenItem1 = Item("Hidden letter", "A hidden letter", weight=0.018)
         HiddenItem1.text = "This is a secret"
-        TestItem = Item("Sample 0", "A sample object", weight=3, category=0, containingSecret=True)
+        TestItem = Item("Sample 0", "A sample object", weight=3)
         TestItem.text = "Draft text"
         TestItem.secretList = [HiddenItem1]
         
         # Add items to rooms inventory
-        house.inventory.child_items[Sarah_Journey.name] = Sarah_Journey
-        house.inventory.child_items[TestItem.name] = TestItem
+        house.inventory.contained_items[Sarah_Journey.name] = Sarah_Journey
+        house.inventory.contained_items[TestItem.name] = TestItem
 
         # Create exits for rooms
 
@@ -263,7 +267,7 @@ class Game:
         command_word = list_of_words[0]
 
         def space_handler(list_of_words):
-            if command_word == "take" or command_word == "drop":
+            if command_word == "take" or command_word == "drop" or command_word == "read":
                 item_name = ""
                 for word in list_of_words[1:-1]:
                     item_name += "{} ".format(word)

@@ -14,7 +14,9 @@
 # The MSG0 variable is used when the command does not take any parameter.
 MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 # The MSG1 variable is used when the command takes 1 parameter.
-MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
+MSG1 = "\nLa commande '{command_word}' prend 1 paramètre.\n"
+# The MSG1 variable is used when the command takes 1 parameter.
+MSG2 = "\nLa commande '{command_word}' prend 2 paramètres.\n"
 
 class Actions:
 
@@ -211,8 +213,8 @@ class Actions:
             return False
 
         player = game.player
-        player_inventory = player.inventory.items
-        current_room_inventory = player.current_room.inventory.items
+        player_inventory = player.inventory.contained_items
+        current_room_inventory = player.current_room.inventory.contained_items
 
         # Get the item to take from the list of words.
         to_take = list_of_words[1]
@@ -246,8 +248,8 @@ class Actions:
             return False
 
         player = game.player
-        player_inventory = player.inventory.items
-        current_room_inventory = player.current_room.inventory.items
+        player_inventory = player.inventory.contained_items
+        current_room_inventory = player.current_room.inventory.contained_items
 
         # Get the item to take from the list of words.
         to_drop = list_of_words[1]
@@ -272,4 +274,73 @@ class Actions:
         
         player_inventory = game.player.inventory
         print(player_inventory.get_inventory(1))    # Reminder : 0 = room; 1 = player
+        return True
+    
+    def read(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            print(l)
+            print(number_of_parameters + 1)
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+        
+        to_read = list_of_words[1]
+
+        player_inventory = game.player.inventory.contained_items
+        current_room_inventory = game.player.current_room.inventory.contained_items
+
+        if to_read in player_inventory:
+            print(player_inventory[to_read].text)   # By default, obj.text = "Nothing to read !"
+        elif to_read in current_room_inventory:
+            print(current_room_inventory[to_read].text)
+        else:
+            print(f"{to_read} does not exist !")
+            return False
+
+    
+    def compare(game, list_of_words, number_of_parameters):
+
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            print(l)
+            print(number_of_parameters + 1)
+            command_word = list_of_words[0]
+            print(MSG2.format(command_word=command_word))
+            return False
+
+        player_inventory = game.player.inventory.contained_items
+        current_room_inventory = game.player.current_room.inventory.contained_items
+
+        biometrics1 = list_of_words[1]
+        biometrics2 = list_of_words[2]
+
+        if biometrics1 in player_inventory:
+            UID1 = player_inventory[biometrics1].biometricsUID
+        elif biometrics1 in current_room_inventory:
+            UID1 = current_room_inventory[biometrics1].biometricsUID
+        else:
+            print(f"{biometrics1} does not exist !")
+            return False
+        
+        if not UID1:    # UD1 = None
+            print(f"There is no biometrics data in {biometrics1}")
+            return False
+
+
+        if biometrics2 in player_inventory:
+            UID2 = player_inventory[biometrics2].biometricsUID
+        elif biometrics2 in current_room_inventory:
+            UID2 = current_room_inventory[biometrics2].biometricsUID
+        else:
+            print(f"{biometrics2} does not exist !")
+            return False
+        
+        if not UID2:    # UD2 = None
+            print(f"There is no biometrics data in {biometrics2}")
+            return False
+        
+        print("Identical !") if UID1 == UID2 else print("Different !")
         return True
