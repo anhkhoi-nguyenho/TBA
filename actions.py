@@ -14,7 +14,9 @@
 # The MSG0 variable is used when the command does not take any parameter.
 MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 # The MSG1 variable is used when the command takes 1 parameter.
-MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
+MSG1 = "\nLa commande '{command_word}' prend 1 paramètre.\n"
+# The MSG1 variable is used when the command takes 1 parameter.
+MSG2 = "\nLa commande '{command_word}' prend 2 paramètres.\n"
 
 class Actions:
 
@@ -211,13 +213,17 @@ class Actions:
             return False
 
         player = game.player
-        player_inventory = player.inventory.items
-        current_room_inventory = player.current_room.inventory.items
+        player_inventory = player.inventory.contained_items
+        current_room_inventory = player.current_room.inventory.contained_items
 
         # Get the item to take from the list of words.
         to_take = list_of_words[1]
 
         if to_take in current_room_inventory:
+
+            if not current_room_inventory[to_take].movable:
+                print(f"\n{to_take} can not be moved and is not added to your bag.")
+                return False
 
             to_take_weight = current_room_inventory[to_take].weight
 
@@ -232,7 +238,7 @@ class Actions:
             del current_room_inventory[to_take]
             return True
 
-        print(to_take, " is not in here !")
+        print(to_take, "is not in the current location !")
         return False
 
     def drop(game, list_of_words, number_of_parameters):
@@ -246,8 +252,8 @@ class Actions:
             return False
 
         player = game.player
-        player_inventory = player.inventory.items
-        current_room_inventory = player.current_room.inventory.items
+        player_inventory = player.inventory.contained_items
+        current_room_inventory = player.current_room.inventory.contained_items
 
         # Get the item to take from the list of words.
         to_drop = list_of_words[1]
@@ -259,7 +265,7 @@ class Actions:
             del player_inventory[to_drop]
             return True
 
-        print(to_drop, " is not in your bag !")
+        print(to_drop, "is not in your bag !")
         return False
     
     def check(game, list_of_words, number_of_parameters):
@@ -273,3 +279,153 @@ class Actions:
         player_inventory = game.player.inventory
         print(player_inventory.get_inventory(1))    # Reminder : 0 = room; 1 = player
         return True
+
+    def read(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            print(l)
+            print(number_of_parameters + 1)
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+        
+        to_read = list_of_words[1]
+
+        player_inventory = game.player.inventory.contained_items
+        current_room_inventory = game.player.current_room.inventory.contained_items
+
+        if to_read in player_inventory:
+            print(player_inventory[to_read].text)   # By default, obj.text = "Nothing to read !"
+        elif to_read in current_room_inventory:
+            print(current_room_inventory[to_read].text)
+        else:
+            print(f"{to_read} is neither in your back nor in the current location !")
+            return False
+
+    def inspect(game, list_of_words, number_of_parameters):
+
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            print(l)
+            print(number_of_parameters + 1)
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+        
+        to_inspect = list_of_words[1]
+
+        player_inventory = game.player.inventory.contained_items
+        current_room_inventory = game.player.current_room.inventory.contained_items
+
+        if to_inspect in player_inventory:
+            
+            contained_items = player_inventory[to_inspect].contained_items
+
+        elif to_inspect in current_room_inventory:
+
+            contained_items = current_room_inventory[to_inspect].contained_items
+            
+        else:
+            print(f"{to_inspect} is neither in your back nor in the current location !")
+            return False
+        
+        s = "\nNothing found !"
+
+        if contained_items:
+            s = f"\n{to_inspect} has following items:"
+            for child_item in contained_items:
+                    s += f"\n\t- {child_item}"
+                    current_room_inventory[child_item.name] = child_item
+        
+        print(s)
+
+    def compare(game, list_of_words, number_of_parameters):
+
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            print(l)
+            print(number_of_parameters + 1)
+            command_word = list_of_words[0]
+            print(MSG2.format(command_word=command_word))
+            return False
+
+        state = True
+
+        player_inventory = game.player.inventory.contained_items
+        current_room_inventory = game.player.current_room.inventory.contained_items
+
+        biometrics1 = list_of_words[1]
+        biometrics2 = list_of_words[2]
+
+        if biometrics1 in player_inventory:
+            UID1 = player_inventory[biometrics1].biometricsUID
+        elif biometrics1 in current_room_inventory:
+            UID1 = current_room_inventory[biometrics1].biometricsUID
+        else:
+            print(f"\n{biometrics1} is neither in your back nor in the current location !")
+            state = False
+
+        if not UID1:    # UD1 = None
+            print(f"\nThere is no biometrics data in {biometrics1}")
+            state = False
+
+        if biometrics2 in player_inventory:
+            UID2 = player_inventory[biometrics2].biometricsUID
+        elif biometrics2 in current_room_inventory:
+            UID2 = current_room_inventory[biometrics2].biometricsUID
+        else:
+            print(f"\n{biometrics2} is neither in your back nor in the current location !")
+            state = False
+        
+        if not UID2:    # UD2 = None
+            print(f"\nThere is no biometrics data in {biometrics2}")
+            state = False
+        
+        if state:
+            print("\nIdentical !") if UID1 == UID2 else print("\nDifferent !")
+
+        return state
+    
+    def unseal(game, list_of_words, number_of_parameters):
+
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            print(l)
+            print(number_of_parameters + 1)
+            command_word = list_of_words[0]
+            print(MSG2.format(command_word=command_word))
+            return False
+        
+        to_unseal = list_of_words[1]
+        code = list_of_words[2]
+
+        player_inventory = game.player.inventory.contained_items
+        current_room_inventory = game.player.current_room.inventory.contained_items
+
+        secret = None
+        if to_unseal in player_inventory:
+            
+            if player_inventory[to_unseal].sealed_code == code:
+                secret = player_inventory[to_unseal].sealed_secret
+
+        elif to_unseal in current_room_inventory:
+
+            if current_room_inventory[to_unseal].sealed_code == code:
+                secret = current_room_inventory[to_unseal].sealed_secret
+            
+        else:
+            print(f"{to_unseal} is neither in your back nor in the current location !")
+            return False
+        
+        s = "\nWrong code or there is no secret to reveal !"
+        if secret:
+            s = f"\n{to_unseal} has following secrets:"
+            for child_item in secret:
+                    s += f"\n\t- {child_item}"
+                    current_room_inventory[child_item.name] = child_item
+        
+        print(s)
