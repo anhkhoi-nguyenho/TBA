@@ -196,16 +196,14 @@ class Actions:
         current_room_inventory = game.player.current_room.inventory
         print(current_room_inventory.get_inventory(0))    # Reminder : 0 = room; 1 = player
 
-        # Display of NPC
-        npcs = [
-            character for character in current_room.characters
-            if character != game.player
-        ]
+        # Display of NPCs
+        s = "There is no character here"
 
-        if npcs:
-            print("Characters present:")
-            for npc in npcs:
-                print(f" - {npc}")
-        else:
-            print("There is no character here")
+        if game.player.current_room.characters :
+            s = ""
+            for character in game.player.current_room.characters:
+                    s += "\n\t- {}".format(character)
+
+        print(s)
+
         return True

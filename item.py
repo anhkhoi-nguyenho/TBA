@@ -79,12 +79,7 @@ class Inventory:
             
             for key in self.items:
                 s += "\n- {}".format(self.items[key])
-                
-            if parentCategory == 0 and self.room is not None:
-                for character in self.room.characters:
-                    if character != self.room.game.player:
-                        s += "\n\t- {}".format(character)
 
-            return s     
+            return s
         
         return "Your bag is empty" if parentCategory else "Nothing here"
