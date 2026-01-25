@@ -1,8 +1,14 @@
-# This file contains the Command class.
+"""
+This file contains the Command class.
+
+This class is used to create different command that 
+will trigger different actions defined in actions.py.
+"""
 
 class Command:
     """
-    This class represents a command. A command is composed of a command word, a help string, an action and a number of parameters.
+    This class represents a command. 
+    A command is composed of a command word, a help string, an action and a number of parameters.
 
     Attributes:
         command_word (str): The command word.

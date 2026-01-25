@@ -1,4 +1,5 @@
-# Description: The actions module.
+"""
+Description: The actions module.
 
 
 # The actions module contains the functions that are called when a command is executed.
@@ -9,11 +10,10 @@
 # The functions return True if the command was executed successfully, False otherwise.
 # The functions print an error message if the number of parameters is incorrect.
 # The error message is different depending on the number of parameters expected by the command.
+"""
 
-
-
-
-# The error message is stored in the MSG0 and MSG1 variables and formatted with the command_word variable, the first word in the command.
+# The error message is stored in the MSG0, MSG1 and MSG2 variables
+# and is formatted with the command_word variable, the first word in the command.
 # The MSG0 variable is used when the command does not take any parameter.
 MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 # The MSG1 variable is used when the command takes 1 parameter.
@@ -23,7 +23,9 @@ MSG2 = "\nLa commande '{command_word}' prend 2 paramètres.\n"
 
 
 class Actions:
-
+    """
+    This class define callback functions that will be triggered by commands defined in game.py
+    """
 
     def go(game, list_of_words, number_of_parameters):
         """
@@ -61,7 +63,7 @@ class Actions:
 
 
         """
-       
+
         player = game.player
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
@@ -115,7 +117,7 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG0.format(command_word=command_word))
             return False
-       
+
         # Set the finished attribute of the game object to True.
         player = game.player
         msg = f"\nThank you, {player.name}, for playing this game. Good Bye !\n"
@@ -161,7 +163,7 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG0.format(command_word=command_word))
             return False
-       
+
         # Print the list of available commands.
         print("\nVoici les commandes disponibles:")
         for command in game.commands.values():
@@ -181,7 +183,7 @@ class Actions:
             return False
 
 
-        # Afficher l'historique via la méthode du Player          
+        # Afficher l'historique via la méthode du Player
         print(game.player.get_history())
         return True
 
@@ -202,17 +204,19 @@ class Actions:
         if not player.history:
             print("\nAucune pièce précédente.\n")
             return False
-       
+
         # Revenir à la pièce précédente
         player.current_room = player.history.pop()  # récupère la dernière pièce visitée
         print(player.current_room.get_long_description())  # description de la nouvelle pièce
-       
+
         # Afficher l'historique mis à jour
         print(player.get_history())
         return True
-   
-    def look(game, list_of_words, number_of_parameters):
 
+    def look(game, list_of_words, number_of_parameters):
+        """
+        Search the current location for visible objects.
+        """
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
@@ -231,7 +235,7 @@ class Actions:
         if game.player.current_room.characters :
             s = ""
             for character in game.player.current_room.characters:
-                    s += "\n\t- {}".format(character)
+                s += f"\n\t- {character}"
 
         print(s)
 
@@ -239,13 +243,15 @@ class Actions:
 
 
     def talk(game, list_of_words, number_of_parameters):
-
-
-        """if len(list_of_words) != number_of_parameters + 1:
-            print(yes)
+        """
+        Callback function to display message from chosen NPC
+        """
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
             command_word = list_of_words[0]
             print(MSG1.format(command_word=command_word))
-        return False"""
+            return False
 
 
         name = list_of_words[1].lower()
@@ -262,14 +268,16 @@ class Actions:
 
         if not found:
             if room.characters:
-                print("Il n'y a personne de ce nom ici. PNJ présents :", ", ".join(room.characters.keys()))
+                print("No one with that name here. Present NPCs :", ", ".join(room.characters.keys()))
             else:
-                print("Il n'y a aucun personnage ici.")
+                print("No one is here")
             return False
         return True
 
     def take(game, list_of_words, number_of_parameters):
-
+        """
+        Callback function to add chosen item into player's inventory
+        """
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
@@ -295,12 +303,12 @@ class Actions:
             to_take_weight = current_room_inventory[to_take].weight
 
             if to_take_weight > player.max_weight:
-                print("\nYour bag is too heavy to add {}".format(to_take))
-                print("Remove {} kg to add the new item".format(to_take_weight - player.max_weight))
+                print(f"\nYour bag is too heavy to add {to_take}")
+                print(f"Remove {to_take_weight - player.max_weight} kg to add the new item")
                 return False
 
             player_inventory[to_take] = current_room_inventory[to_take]
-            print("\n{} is added to your bag".format(to_take))
+            print(f"\n{to_take} is added to your bag")
             player.max_weight -= to_take_weight
             del current_room_inventory[to_take]
             return True
@@ -309,6 +317,9 @@ class Actions:
         return False
 
     def drop(game, list_of_words, number_of_parameters):
+        """
+        Callback function to remove object from player's inventory
+        """
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
@@ -327,27 +338,33 @@ class Actions:
 
         if to_drop in player_inventory:
             current_room_inventory[to_drop] = player_inventory[to_drop]
-            print("\n{} is removed from your bag".format(to_drop))
+            print(f"\n{to_drop} is removed from your bag")
             player.max_weight += player_inventory[to_drop].weight
             del player_inventory[to_drop]
             return True
 
         print(to_drop, "is not in your bag !")
         return False
-    
+
     def check(game, list_of_words, number_of_parameters):
+        """
+        Callback function to check for items inside player's inventory'
+        """
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
             command_word = list_of_words[0]
             print(MSG0.format(command_word=command_word))
             return False
-        
+
         player_inventory = game.player.inventory
         print(player_inventory.get_inventory(1))    # Reminder : 0 = room; 1 = player
         return True
 
     def read(game, list_of_words, number_of_parameters):
+        """
+        Callback function to read the text of the chosen item
+        """
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
@@ -356,7 +373,7 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG1.format(command_word=command_word))
             return False
-        
+
         to_read = list_of_words[1]
 
         player_inventory = game.player.inventory.contained_items
@@ -371,7 +388,9 @@ class Actions:
             return False
 
     def inspect(game, list_of_words, number_of_parameters):
-
+        """
+        Callback function to reveal items hidden or contained inside another
+        """
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
@@ -380,36 +399,38 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG1.format(command_word=command_word))
             return False
-        
+
         to_inspect = list_of_words[1]
 
         player_inventory = game.player.inventory.contained_items
         current_room_inventory = game.player.current_room.inventory.contained_items
 
         if to_inspect in player_inventory:
-            
+
             contained_items = player_inventory[to_inspect].contained_items
 
         elif to_inspect in current_room_inventory:
 
             contained_items = current_room_inventory[to_inspect].contained_items
-            
+
         else:
             print(f"{to_inspect} is neither in your back nor in the current location !")
             return False
-        
+
         s = "\nNothing found !"
 
         if contained_items:
             s = f"\n{to_inspect} has following items:"
             for child_item in contained_items:
-                    s += f"\n\t- {child_item}"
-                    current_room_inventory[child_item.name] = child_item
-        
+                s += f"\n\t- {child_item}"
+                current_room_inventory[child_item.name] = child_item
+
         print(s)
 
     def compare(game, list_of_words, number_of_parameters):
-
+        """
+        Callback function to compare Unique Identifier of two items having biometricsUID attributes
+        """
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
@@ -446,18 +467,20 @@ class Actions:
         else:
             print(f"\n{biometrics2} is neither in your back nor in the current location !")
             state = False
-        
+
         if not UID2:    # UD2 = None
             print(f"\nThere is no biometrics data in {biometrics2}")
             state = False
-        
+
         if state:
             print("\nIdentical !") if UID1 == UID2 else print("\nDifferent !")
 
         return state
-    
-    def unseal(game, list_of_words, number_of_parameters):
 
+    def unseal(game, list_of_words, number_of_parameters):
+        """
+        Callback function to show items that can only be unlocked with a specific code 
+        """
         l = len(list_of_words)
         # If the number of parameters is incorrect, print an error message and return False.
         if l != number_of_parameters + 1:
@@ -466,7 +489,7 @@ class Actions:
             command_word = list_of_words[0]
             print(MSG2.format(command_word=command_word))
             return False
-        
+
         to_unseal = list_of_words[1]
         code = list_of_words[2]
 
@@ -475,7 +498,7 @@ class Actions:
 
         secret = None
         if to_unseal in player_inventory:
-            
+
             if player_inventory[to_unseal].sealed_code == code:
                 secret = player_inventory[to_unseal].sealed_secret
 
@@ -483,16 +506,16 @@ class Actions:
 
             if current_room_inventory[to_unseal].sealed_code == code:
                 secret = current_room_inventory[to_unseal].sealed_secret
-            
+
         else:
             print(f"{to_unseal} is neither in your back nor in the current location !")
             return False
-        
+
         s = "\nWrong code or there is no secret to reveal !"
         if secret:
             s = f"\n{to_unseal} has following secrets:"
             for child_item in secret:
-                    s += f"\n\t- {child_item}"
-                    current_room_inventory[child_item.name] = child_item
-        
+                s += f"\n\t- {child_item}"
+                current_room_inventory[child_item.name] = child_item
+
         print(s)

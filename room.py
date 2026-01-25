@@ -1,3 +1,6 @@
+"""
+This file containes Room class
+"""
 from item import Inventory
 # Define the Room class.
 class Room:
@@ -15,8 +18,8 @@ class Room:
     Methods:
         __init__(self, name, description) : The constructor defining attributes.
         get_exit(self, direction) : Return the exit place corresponding to the given direction
-        get_exit_string(self) : Return a string describing possible exits. In version 1, this string contains possible exit directions.
-        get_long_description(self) : Return a string describing current place including possible exits.
+        get_exit_string(self) : Return a string describing possible exits.
+        get_long_description(self) : Return a string describing current place and possible exits.
    
     Examples:
 
@@ -36,25 +39,34 @@ class Room:
         self.exits = {}
         self.inventory = Inventory()
         self.characters = {}
-   
+
     # Define the get_exit method.
     def get_exit(self, direction):
-
+        """
+        Method to obtain possible exits
+        """
         # Return the room in the given direction if it exists.
-        if direction in self.exits.keys():
+        if direction in self.exits:
             return self.exits[direction]
         else:
             return None
-   
+
     # Return a string describing the room's exits.
     def get_exit_string(self):
+        """
+        Format a string to display possible exits
+        """
         exit_string = "Exits: "
-        for exit in self.exits.keys():
-            if self.exits.get(exit) is not None:
-                exit_string += exit + ", "
+        for _exit in self.exits:
+            if self.exits.get(_exit) is not None:
+                exit_string += _exit + ", "
         exit_string = exit_string.strip(", ")
         return exit_string
 
     # Return a long description of this room including exits.
     def get_long_description(self):
+        """
+        Format a string to display the description of the current location
+        and possible exits
+        """
         return f"\nYou are in {self.description}\n\n{self.get_exit_string()}"

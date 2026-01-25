@@ -1,14 +1,12 @@
+"""
+This file contains Player class
+"""
 from item import Inventory
 # Define the Player class.
 class Player():
     """
-    This class is used to create a player,
-    In a first time it memorizes the player name,
-    Next, it indicates it doesn't have room yet
-    After it defines the way the player move and looks for the next room it will go
-    If there's no exit -> send an error message("Aucune porte dans cette direction !") and return False
-    In the other case it changes the player room and print the new room's description
-
+    This class is used to create a player with different attributes and methods to locate
+    and move the player.
 
     Attributes:
         Name (str): The name of the player
@@ -16,7 +14,7 @@ class Player():
     
     Method:
         __init__(self, name): The constructor
-        move(self, direction): Return False if there is no room into this direction and return if there is a room
+        move(self, direction): Change the player location, return False if there is no exit
 
     Examples:
     >>> player1 = "Anh Khoi"
@@ -31,9 +29,12 @@ class Player():
         self.history = []
         self.inventory = Inventory()
         self.max_weight = 10
-    
+
     # Define the move method.
     def move(self, direction):
+        """
+        Method to change the location of player
+        """
         # Get the next room from the exits dictionary of the current room.
         next_room = self.current_room.exits[direction]
 
@@ -41,7 +42,7 @@ class Player():
         if next_room is None:
             print("\nAucune porte dans cette direction !\n")
             return False
-        
+
         # Save current room into history before moving.
         if self.current_room is not None:
             self.history.append(self.current_room)
@@ -57,10 +58,10 @@ class Player():
         The history contains previously visited rooms in chronological order
         and includes the current room as the last entry when available.
         """
-        if self.history == []:
+        if not self.history:
             return "\nNo history available.\n"
 
         s = "\nYou have visited the following rooms:\n"
         for room in self.history:
-            s += "\n\t- {}".format(room.description)
+            s += f"\n\t- {room.description}"
         return s
