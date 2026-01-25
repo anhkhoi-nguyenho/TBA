@@ -1,13 +1,13 @@
-# TBA - Who Murdered Sarah?
+# TBA - Experimental
 
-## :uk: English
-### About the game
-***Who Murdered Sarah?*** is a detective text-based adventure game following Eric's footsteps to uncover the murder of his wife, Sarah, in the town of Rainhood.
+Cette branche est une version expérimentale de la branche principale (main).
+Cette branche ne sera jamais fusionnée avec aucune autre branche.
 
-Throughout the game, the player will investigate how Sarah was assassinated while uncovering the past of the couple by solving different riddles.
+Elle a pour but de tester les changements majeurs des programmes sans faire courir aucun risque aux branches de développement principales.
 
-## :fr: Français
-### À propos du jeu
-***Who Murdered Sarah?*** est un jeu d’aventure textuel dans lequel vous suivez les pas d’Eric pour découvrir qui a assassiné sa femme, Sarah, dans la ville de Rainhood.
 
-Au fil du jeu, le joueur devra enquêter sur la mort de Sarah tout en découvrant le passé du couple à travers différentes énigmes.
+This branch is an experimental version of the main branch.
+It will never be merged into any other branch.
+
+It is intended to test major program changes without posing any risk to the main development branches
+
