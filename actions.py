@@ -100,7 +100,7 @@ class Actions:
         
         # Set the finished attribute of the game object to True.
         player = game.player
-        msg = f"\nThank you, {player.name}, for playing this game. Good Bye !\n"
+        msg = f"\nThank you {player.name}, for playing this game. Good Bye !\n"
         print(msg)
         game.finished = True
         return True
@@ -193,5 +193,83 @@ class Actions:
             print(MSG0.format(command_word=command_word))
             return False
 
-        current_room_inventory = game.player.current_room.inventory
+        current_room = game.player.current_room
+        current_room_inventory = current_room.inventory
+        print("\nYou are in", current_room.description)
         print(current_room_inventory.get_inventory(0))    # Reminder : 0 = room; 1 = player
+        return True
+    
+    def take(game, list_of_words, number_of_parameters):
+
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            print(l)
+            print(number_of_parameters + 1)
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+
+        player = game.player
+        player_inventory = player.inventory.items
+        current_room_inventory = player.current_room.inventory.items
+
+        # Get the item to take from the list of words.
+        to_take = list_of_words[1]
+
+        if to_take in current_room_inventory:
+
+            to_take_weight = current_room_inventory[to_take].weight
+
+            if to_take_weight > player.max_weight:
+                print("\nYour bag is too heavy to add {}".format(to_take))
+                print("Remove {} kg to add the new item".format(to_take_weight - player.max_weight))
+                return False
+
+            player_inventory[to_take] = current_room_inventory[to_take]
+            print("\n{} is added to your bag".format(to_take))
+            player.max_weight -= to_take_weight
+            del current_room_inventory[to_take]
+            return True
+
+        print(to_take, " is not in here !")
+        return False
+
+    def drop(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            print(l)
+            print(number_of_parameters + 1)
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+
+        player = game.player
+        player_inventory = player.inventory.items
+        current_room_inventory = player.current_room.inventory.items
+
+        # Get the item to take from the list of words.
+        to_drop = list_of_words[1]
+
+        if to_drop in player_inventory:
+            current_room_inventory[to_drop] = player_inventory[to_drop]
+            print("\n{} is removed from your bag".format(to_drop))
+            player.max_weight += player_inventory[to_drop].weight
+            del player_inventory[to_drop]
+            return True
+
+        print(to_drop, " is not in your bag !")
+        return False
+    
+    def check(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        player_inventory = game.player.inventory
+        print(player_inventory.get_inventory(1))    # Reminder : 0 = room; 1 = player
+        return True

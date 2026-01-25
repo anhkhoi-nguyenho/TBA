@@ -1,3 +1,4 @@
+from item import Inventory
 # Define the Player class.
 class Player():
     """
@@ -28,7 +29,8 @@ class Player():
         self.name = name
         self.current_room = None
         self.history = []
-        self.inventory = None
+        self.inventory = Inventory()
+        self.max_weight = 10
     
     # Define the move method.
     def move(self, direction):
@@ -60,5 +62,5 @@ class Player():
 
         s = "\nYou have visited the following rooms:\n"
         for room in self.history:
-            s += "\t- {}\n".format(room.description)
+            s += "\n\t- {}".format(room.description)
         return s

@@ -32,8 +32,14 @@ class Game:
         self.commands["history"] = history
         back = Command("back", " : revenir à la pièce précédente", Actions.back, 0)
         self.commands["back"] = back
-        look = Command("look", " : observer l'environnement", Actions.look, 0)
+        look = Command("look", " : observe the room", Actions.look, 0)
         self.commands["look"] = look
+        take = Command("take", " <item> : item to put into your bag", Actions.take, 1)
+        self.commands["take"] = take
+        drop = Command("drop", " <item> : item to get out of your bag", Actions.drop, 1)
+        self.commands["drop"] = drop
+        check = Command("check", " : check for items in your bag", Actions.check, 0)
+        self.commands["check"] = check
         
         # Setup rooms
 
@@ -74,36 +80,18 @@ class Game:
         self.rooms.append(Street3)
         """
 
-        # Initialize inventory of rooms
-        house.inventory                     = Inventory()
-        library.inventory                   = Inventory()
-        bar.inventory                       = Inventory()
-        bridge.inventory                    = Inventory()
-        shoes_shop.inventory                = Inventory()
-        neighbour_s_house.inventory         = Inventory()
-        park.inventory                      = Inventory()
-        police_station.inventory            = Inventory()
-        archives.inventory                  = Inventory()
-        doctor_s_surgery.inventory          = Inventory()
-        abandoned_hotel.inventory           = Inventory()
-        train_station.inventory             = Inventory()
-        psychiatric_hospital                = Inventory()
-        street1                             = Inventory()
-        street2                             = Inventory()
-        street3                 = Room("Street3", "Street at the left od the bridge")
-
         # Create different items
-        Sarah_Journey = Item("Sarah's journey", "A personal journey of Sarah", weight=0.5, category=0)
+        Sarah_Journey = Item("Sarah's journey", "A personal journey of Sarah", weight=8, category=0)
         Sarah_Journey.text = "1/12/1999 - Eric was made, his condition has worsened since our last conversation"
         HiddenItem1 = Item("Hidden letter", "A hidden letter", weight=0.018, category=1)
         HiddenItem1.text = "This is a secret"
-        TestItem = Item("Sample 0", "A sample object", weight=0, category=0, containingSecret=True)
+        TestItem = Item("Sample 0", "A sample object", weight=3, category=0, containingSecret=True)
         TestItem.text = "Draft text"
         TestItem.secretList = [HiddenItem1]
         
         # Add items to rooms inventory
-        house.inventory.items[Sarah_Journey.name] = Sarah_Journey
-        house.inventory.items[TestItem.name] = TestItem
+        house.inventory.child_items[Sarah_Journey.name] = Sarah_Journey
+        house.inventory.child_items[TestItem.name] = TestItem
 
         # Create exits for rooms
 
@@ -255,7 +243,6 @@ class Game:
 
         self.player = Player(input("\nEnter your name: "))
         self.player.current_room = house
-        self.player.inventory = Inventory()
 
     # Play the game
     def play(self):
@@ -264,7 +251,7 @@ class Game:
         # Loop until the game is finished
         while not self.finished:
             # Get the command from the player
-            self.process_command(input("> "))
+            self.process_command(input("\n> "))
         return None
 
     # Process the command entered by the player
@@ -275,20 +262,30 @@ class Game:
 
         command_word = list_of_words[0]
 
+        def space_handler(list_of_words):
+            if command_word == "take" or command_word == "drop":
+                item_name = ""
+                for word in list_of_words[1:-1]:
+                    item_name += "{} ".format(word)
+                item_name += list_of_words[-1] 
+                list_of_words = [list_of_words[0]] + [item_name]
+            
+            command = self.commands[command_word]
+            command.action(self, list_of_words, command.number_of_parameters)
+
         # Only handle the command if it is not empty  
         if command_word != "":
             # If the command is not recognized, print an error message
             if command_word not in self.commands.keys():
-                print(f"\nUnrecognized '{command_word}' command. Type 'help' for possible commands.\n")
+                print(f"\nUnrecognized '{command_word}' command. Type 'help' for possible commands.")
             # If the command is recognized, execute it
             else:
-                command = self.commands[command_word]
-                command.action(self, list_of_words, command.number_of_parameters)
+                space_handler(list_of_words)
 
     # Print the welcome message
     def print_welcome(self):
         print(f"\nWelcome player {self.player.name}!")
-        print(f"In this world, you are Eric.")
+        print(f"\nIn this world, you are Eric.")
         print(f"Let's uncover the truth about your wife's death!")
         print("\nType 'help' to for possible commands.")
 

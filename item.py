@@ -68,18 +68,18 @@ class Item:
 class Inventory:
 
     def __init__(self):
-        self.items = {}
+        self.child_items = {}
     
     def get_inventory(self, parentCategory):      # parentCategory : 0 = room, 1 = player
-        if self.items:
+        if self.child_items:
             if parentCategory :
-                s = "You have the following items:"
+                s = "\nYou have the following items:"
             else:
-                s = "The room contains:"
+                s = "\nThere is:"
             
-            for key in self.items:
-                s += "\n- {}".format(self.items[key])
+            for key in self.child_items:
+                s += "\n- {}".format(self.child_items[key])
             
             return s     
         
-        return "Your bag is empty" if parentCategory else "Nothing here"
+        return "\nYour bag is empty" if parentCategory else "There is nothing here"
