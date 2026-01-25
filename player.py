@@ -1,3 +1,4 @@
+from item import Inventory
 # Define the Player class.
 class Player():
     """
@@ -27,6 +28,9 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.current_room = None
+        self.history = []
+        self.inventory = Inventory()
+        self.max_weight = 10
     
     # Define the move method.
     def move(self, direction):
@@ -38,9 +42,25 @@ class Player():
             print("\nAucune porte dans cette direction !\n")
             return False
         
+        # Save current room into history before moving.
+        if self.current_room is not None:
+            self.history.append(self.current_room)
+
         # Set the current room to the next room.
         self.current_room = next_room
         print(self.current_room.get_long_description())
         return True
 
-    
+    def get_history(self):
+        """Return a string representing the history of visited rooms.
+
+        The history contains previously visited rooms in chronological order
+        and includes the current room as the last entry when available.
+        """
+        if self.history == []:
+            return "\nNo history available.\n"
+
+        s = "\nYou have visited the following rooms:\n"
+        for room in self.history:
+            s += "\n\t- {}".format(room.description)
+        return s
