@@ -7,6 +7,9 @@ from player import Player
 from command import Command
 from actions import Actions
 from item import Item, Inventory
+from character import Character
+
+DEBUG = True
 
 class Game:
 
@@ -34,25 +37,68 @@ class Game:
         self.commands["back"] = back
         look = Command("look", " : observer l'environnement", Actions.look, 0)
         self.commands["look"] = look
+
+
         
         # Setup rooms
 
-        house                   = Room("House", "the hero's house")
-        library                 = Room("Library", "a room with boocks in the hero's house")
-        bar                     = Room("Bar", "the Rainhood main bar")
-        bridge                  = Room("Bridge", "the bridge where they found the Sarah's lifeless body" )
-        shoes_shop              = Room("Shoes shop", "the hugest shoes shop of Rainhood")
-        neighbour_s_house       = Room("Neighbour's house", "the house of the neighbours of the hero")
-        park                    = Room("Park","the local park")
-        police_station          = Room("Police station","police station of Rainhood")
-        archives                = Room("Archives", "national archives")
-        doctor_s_surgery        = Room("Doctor's surgery","the surgery of the former Eric's psychiatrist ")
-        abandoned_hotel         = Room("Abandoned hotel","hotel where the couple did its honeymoon")
-        train_station           = Room("Train station","the Rainhood's train station")
-        psychiatric_hospital    = Room("Psychiatric hospital", "the Rainhood's psychiatric hospital")
-        street1                 = Room("Street1", "Street in fornt of the hero's house")
-        street2                 = Room("Street2", "Street2 foward the bridge")
-        street3                 = Room("Street3", "Street at the left od the bridge")
+        house                   = Room("House", "the hero's house", {})
+        library                 = Room("Library", "a room with boocks in the hero's house",{})
+        bar                     = Room("Bar", "the Rainhood main bar", {})
+        bridge                  = Room("Bridge", "the bridge where they found the Sarah's lifeless body", {} )
+        shoes_shop              = Room("Shoes shop", "the hugest shoes shop of Rainhood", {})
+        neighbour_s_house       = Room("Neighbour's house", "the house of the neighbours of the hero", {})
+        park                    = Room("Park","the local park", {})
+        police_station          = Room("Police station","police station of Rainhood", {})
+        archives                = Room("Archives", "national archives", {})
+        doctor_s_surgery        = Room("Doctor's surgery","the surgery of the former Eric's psychiatrist ", {})
+        abandoned_hotel         = Room("Abandoned hotel","hotel where the couple did its honeymoon",{})
+        train_station           = Room("Train station","the Rainhood's train station",{})
+        psychiatric_hospital    = Room("Psychiatric hospital", "the Rainhood's psychiatric hospital", {})
+        street1                 = Room("Street1", "Street in fornt of the hero's house", {})
+        street2                 = Room("Street2", "Street2 foward the bridge", {})
+        street3                 = Room("Street3", "Street at the left of the bridge", {})
+
+         # Setup NPCs
+        barman = Character("Barman", "The bar's barman", bar, ["what can I get you?", "I heard people talking about it and the only clue I can give is: the stone in the air hover the river"])
+        shopkeeper = Character("Shopkeeper", "The shoes shop's shopkeeper", shoes_shop, ["Welcome to my shop!", "Okay let me check in stock if Ihave something like this","I found this model","Yeah, it seems o me that someone bought it one or two weeks ago"])
+        neighbour_wife = Character("Neighbour's wife", "The hero's neighbour's wife", neighbour_s_house, ["I'm so sorry for the death of your wife. If you need anything, just let me know., "])
+        neighbour_husband = Character("Neighbour's husband", "The hero's neighbour's husband", neighbour_s_house, ["Hello Eric", "It's a hard time for all of us."])
+        forest_guard = Character("Forest guard", "The park's forest guard", park, ["Keep an eye out for anything unusual.", "The woods can be dangerous at night."])
+        dog_walker = Character("Dog walker", "A person walking their dog in the park", park, ["My dog loves this park!"])
+        jogger = Character("Jogger", "A person jogging in the park", park, ["It's a beautiful day for a run!"])
+        child = Character("Child", "A child playing in the park", park, ["Mommy can I have a ice cream?"])
+        chief_inspector = Character("Chief Inspector", "The chief inspector at the police station ", police_station, ["What can I do for you, Eric?", "Maybe you could find something at the archives"])
+        detective = Character("Detective", "A detective at the police station", police_station, ["We are doing our best to solve the case."])
+        officer = Character("Officer", "A police officer at the police station", police_station, ["Stay safe out there"])
+        archivist = Character("Achivist", "The archivist at the national archives", archives, ["let me check our records for you.", "Here are the documents you requested."]) 
+        psychiatrist = Character("Psyachiatrist", "The hero's former psychiatrist", doctor_s_surgery, ["How have you been since our last session?"," Are you okay to let me hypnotize you again?", "She isn't real a long as you continue to..."])
+        station_master = Character("Station Master", "The train station's station master", train_station, ["The next train to the city leaves in 10 minutes", "I'm so sorry for you, but I've never seen your wife"])
+        nurse = Character("Nurse", "A nurse at the psyachiatric hospital", psychiatric_hospital, ["How are you feeling today?"])
+        doctor = Character("Doctor", " A doctor at the psyachiatric hospital", psychiatric_hospital, ["We are here to help you get better."])
+
+
+
+        bar.characters[barman.name] = barman
+        neighbour_s_house.characters[neighbour_wife.name] = neighbour_wife
+        neighbour_s_house.characters[neighbour_husband.name] = neighbour_husband
+        park.characters[forest_guard.name] = forest_guard
+        park.characters[dog_walker.name] = dog_walker
+        park.characters[jogger.name] = jogger
+        park.characters[child.name] = child
+        police_station.characters[chief_inspector.name] = chief_inspector
+        police_station.characters[detective.name] = detective
+        police_station.characters[officer.name] = officer
+        archives.characters[archivist.name] = archivist
+        doctor_s_surgery.characters[psychiatrist.name] = psychiatrist
+        train_station.characters[station_master.name] = station_master
+        psychiatric_hospital.characters[nurse.name] = nurse
+        psychiatric_hospital.characters[doctor.name] = doctor
+
+
+       
+
+
 
         """
         Currently not needed - Append room to rooms list
@@ -104,6 +150,12 @@ class Game:
         # Add items to rooms inventory
         house.inventory.items[Sarah_Journey.name] = Sarah_Journey
         house.inventory.items[TestItem.name] = TestItem
+
+        # Create PNJ
+        
+
+        # Add PNJ to rooms
+        # syntax : house.characters[objPNJ.name] = objPNJ
 
         # Create exits for rooms
 
