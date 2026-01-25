@@ -2,6 +2,7 @@ class Item:
 
     def __init__(self, name, description, weight, movable= True):
 
+
         self.name                       = name
         self.description                = description
         self.weight                     = weight
@@ -13,9 +14,12 @@ class Item:
         self.sealed_code                = None
 
 
+
+
     def __str__(self):
         return "{} : {} ({} kg)".format(self.name, self.description, self.weight)
 class Inventory:
+
 
     def __init__(self):
         self.contained_items = {}

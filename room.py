@@ -17,7 +17,7 @@ class Room:
         get_exit(self, direction) : Return the exit place corresponding to the given direction
         get_exit_string(self) : Return a string describing possible exits. In version 1, this string contains possible exit directions.
         get_long_description(self) : Return a string describing current place including possible exits.
-    
+   
     Examples:
 
     >>> room1 = Room("Generic Room 1", "dans Generic room 1 example." )
@@ -29,13 +29,14 @@ class Room:
     >>> room1.exits = {"N" : room2, "E" : None, "S" : None, "O" : None}
     """
 
-    # Define the constructor. 
+    # Define the constructor.
     def __init__(self, name, description):
         self.name = name
         self.description = description
         self.exits = {}
         self.inventory = Inventory()
-    
+        self.characters = {}
+   
     # Define the get_exit method.
     def get_exit(self, direction):
 
@@ -44,10 +45,10 @@ class Room:
             return self.exits[direction]
         else:
             return None
-    
+   
     # Return a string describing the room's exits.
     def get_exit_string(self):
-        exit_string = "Exits: " 
+        exit_string = "Exits: "
         for exit in self.exits.keys():
             if self.exits.get(exit) is not None:
                 exit_string += exit + ", "
