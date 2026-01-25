@@ -1,15 +1,14 @@
-# Description: Game class
-
-
+"""
+This fie contains game class
+"""
 # Import modules
 
-
+from uuid import uuid4              # To generate a random UUID
 from room import Room
 from player import Player
 from command import Command
 from actions import Actions
-from item import Item, Inventory
-from uuid import uuid4              # To generate a random UUID
+from item import Item
 from character import Character
 
 
@@ -17,19 +16,27 @@ DEBUG = True
 
 
 class Game:
+    """
+    Game class responsible for running the game
 
+    Attributes:
+        finished (bool): whether the game is finished
+        commands (dict): dictionnary of available commands
+        player (Player): an instance of Player
+    """
 
     # Constructor
     def __init__(self):
         self.finished = False
-        # self.rooms = []
         self.commands = {}
         self.player = None
-   
+
     # Setup the game
     def setup(self):
 
-
+        """
+        Game setup
+        """
         # Setup commands
 
 
@@ -62,10 +69,6 @@ class Game:
         talk = Command("talk", " <nom> : parler à un personnage", Actions.talk, 1)
         self.commands["talk"] = talk
 
-
-
-
-       
         # Setup rooms
 
 
@@ -110,36 +113,6 @@ class Game:
         doctor_s_surgery.characters[psychiatrist.name] = psychiatrist
         bus_station.characters[station_master.name] = station_master
         psychiatric_hospital.characters[doctor.name] = doctor
-
-
-
-
-       
-
-
-
-
-
-
-        """
-        Currently not needed - Append room to rooms list
-        self.rooms.append(house)
-        self.rooms.append(library)
-        self.rooms.append(bar)
-        self.rooms.append(bridge)
-        self.rooms.append(shoes_shop)
-        self.rooms.append(neighbour_s_house)
-        self.rooms.append(park)
-        self.rooms.append(police_station)
-        self.rooms.append(archives)
-        self.rooms.append(doctor_s_surgery)
-        self.rooms.append(abandoned_hotel)
-        self.rooms.append(bus_station)
-        self.rooms.append(psychiatric_hospital)
-        self.rooms.append(stree1)
-        self.rooms.append(Street2)
-        self.rooms.append(Street3)
-        """
 
         # Create different items
 
@@ -194,7 +167,7 @@ class Game:
         sealed_case_file.sealed_secret = [mental_health_note, crime_record]
         sealed_case_file.sealed_code = "1951"
 
-        
+
 
         # Add items to rooms inventory
         library.inventory.contained_items[library1.name] = library1
@@ -213,17 +186,7 @@ class Game:
         police_station.inventory.contained_items[case_file2.name] = case_file2
         police_station.inventory.contained_items[sealed_case_file.name] = sealed_case_file
 
-
-        # Create PNJ
-       
-
-
-        # Add PNJ to rooms
-        # syntax : house.characters[objPNJ.name] = objPNJ
-
-
         # Create exits for rooms
-
 
         house.exits = {
             "B": None,
@@ -233,7 +196,7 @@ class Game:
             "I": library,
             "O": None
         }
-       
+
         library.exits = {
             "B": None,
             "F": None,
@@ -252,7 +215,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         street1.exits = {
             "B": None,
             "F": bar,
@@ -261,7 +224,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         bar.exits = {
             "B": street1,
             "F": bridge,
@@ -270,7 +233,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         bridge.exits = {
             "B": bar,
             "F": street2,
@@ -279,7 +242,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         street2.exits = {
             "B": bridge,
             "F": police_station,
@@ -288,7 +251,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         street3.exits = {
             "B": None,
             "F":park,
@@ -297,7 +260,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         shoes_shop.exits = {
             "B": abandoned_hotel,
             "F": doctor_s_surgery,
@@ -336,7 +299,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         doctor_s_surgery.exits = {
             "B": shoes_shop,
             "F": psychiatric_hospital,
@@ -345,7 +308,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         abandoned_hotel.exits = {
             "B": doctor_s_surgery,
             "F": archives,
@@ -364,7 +327,7 @@ class Game:
             "I": None,
             "O": None
         }
-       
+
         psychiatric_hospital.exits = {
             "B": doctor_s_surgery,
             "F": archives,
@@ -384,6 +347,9 @@ class Game:
 
     # Play the game
     def play(self):
+        """
+        Start the game
+        """
         self.setup()
         self.print_welcome()
         # Loop until the game is finished
@@ -395,8 +361,9 @@ class Game:
 
     # Process the command entered by the player
     def process_command(self, command_string) -> None:
-
-
+        """
+        Handle player command
+        """
         # Split the command string into a list of words
         list_of_words = command_string.split(" ")
 
@@ -409,22 +376,22 @@ class Game:
 
                 item_name = ""
                 for word in list_of_words[1:-1]:
-                    item_name += "{} ".format(word)
-                item_name += list_of_words[-1] 
+                    item_name += f"{word} "
+                item_name += list_of_words[-1]
                 list_of_words = [list_of_words[0]] + [item_name]
-            
+
             elif command_word == "compare":
 
                 separator_index = list_of_words.index("and")
 
                 item1_name = ""
                 for word in list_of_words[1:separator_index - 1]:
-                    item1_name += "{} ".format(word)
+                    item1_name += f"{word} "
                 item1_name += list_of_words[separator_index - 1]
 
                 item2_name = ""
                 for word in list_of_words[separator_index + 1:- 1]:
-                    item2_name += "{} ".format(word)
+                    item2_name += f"{word} "
                 item2_name += list_of_words[- 1]
 
                 list_of_words = [list_of_words[0]] + [item1_name] + [item2_name]
@@ -435,12 +402,12 @@ class Game:
 
                 item_name = ""
                 for word in list_of_words[1:separator_index - 1]:
-                    item_name += "{} ".format(word)
+                    item_name += f"{word} "
                 item_name += list_of_words[separator_index - 1]
 
                 code = ""
                 for word in list_of_words[separator_index + 1:- 1]:
-                    code += "{} ".format(word)
+                    code += f"{word} "
                 code += list_of_words[- 1]
 
                 list_of_words = [list_of_words[0]] + [item_name] + [code]
@@ -448,10 +415,10 @@ class Game:
             command = self.commands[command_word]
             command.action(self, list_of_words, command.number_of_parameters)
 
-        # Only handle the command if it is not empty  
+        # Only handle the command if it is not empty
         if command_word != "":
             # If the command is not recognized, print an error message
-            if command_word not in self.commands.keys():
+            if command_word not in self.commands:
                 print(f"\nUnrecognized '{command_word}' command. Type 'help' for possible commands.")
             # If the command is recognized, execute it
             else:
@@ -460,24 +427,26 @@ class Game:
 
     # Print the welcome message
     def print_welcome(self):
+        """
+        Display welcome message
+        """
         print(f"\nWelcome player {self.player.name}!")
-        print(f"\nIn this world, you are Eric.")
-        print(f"Let's uncover the truth about your wife's death!")
+        print("\nIn this world, you are Eric.")
+        print("Let's uncover the truth about your wife's death!")
         print("\nType 'help' to for possible commands.")
 
 
         print(self.player.current_room.get_long_description())
-   
 
 
 def main():
+    """
+    Main function to launch the game
+    """
     # Create a game object and play the game
     Game().play()
-   
+
 
 
 if __name__ == "__main__":
     main()
-
-
-
