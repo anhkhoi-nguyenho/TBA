@@ -9,6 +9,7 @@ from player import Player
 from command import Command
 from actions import Actions
 from item import Item, Inventory
+from uuid import uuid4              # To generate a random UUID
 from character import Character
 
 
@@ -42,8 +43,22 @@ class Game:
         self.commands["history"] = history
         back = Command("back", " : revenir à la pièce précédente", Actions.back, 0)
         self.commands["back"] = back
-        look = Command("look", " : observer l'environnement", Actions.look, 0)
+        look = Command("look", " : observe the room", Actions.look, 0)
         self.commands["look"] = look
+        take = Command("take", " <item> : put item into your bag", Actions.take, 1)
+        self.commands["take"] = take
+        drop = Command("drop", " <item> : get item out of your bag", Actions.drop, 1)
+        self.commands["drop"] = drop
+        check = Command("check", " : check for items in your bag", Actions.check, 0)
+        self.commands["check"] = check
+        read = Command("read", " <item> : read item", Actions.read, 1)
+        self.commands["read"] = read
+        compare = Command("compare", " <item 1> and <item 2> : compare biometrics data on item 1 and item 2", Actions.compare, 2)
+        self.commands["compare"] = compare
+        inspect = Command("inspect", " <item> : inspect item for contained items", Actions.inspect, 1)
+        self.commands["inspect"] = inspect
+        unseal = Command("unseal", " <item> with <code> : unseal item with the provided code", Actions.unseal, 2)
+        self.commands["unseal"] = unseal
         talk = Command("talk", " <nom> : parler à un personnage", Actions.talk, 1)
         self.commands["talk"] = talk
 
@@ -126,38 +141,77 @@ class Game:
         self.rooms.append(Street3)
         """
 
-
-        # Initialize inventory of rooms
-        house.inventory                     = Inventory()
-        library.inventory                   = Inventory()
-        bar.inventory                       = Inventory()
-        bridge.inventory                    = Inventory()
-        shoes_shop.inventory                = Inventory()
-        neighbour_s_house.inventory         = Inventory()
-        park.inventory                      = Inventory()
-        police_station.inventory            = Inventory()
-        archives.inventory                  = Inventory()
-        doctor_s_surgery.inventory          = Inventory()
-        abandoned_hotel.inventory           = Inventory()
-        bus_station.inventory             = Inventory()
-        psychiatric_hospital                = Inventory()
-        street1                             = Inventory()
-        street2                             = Inventory()
-        street3                 = Room("Street3", "Street at the left od the bridge")
-
-
         # Create different items
-        Sarah_Journey = Item("Sarah's journey", "A personal journey of Sarah", weight=0.5, category=0)
-        Sarah_Journey.text = "1/12/1999 - Eric was made, his condition has worsened since our last conversation"
-        HiddenItem1 = Item("Hidden letter", "A hidden letter", weight=0.018, category=1)
-        HiddenItem1.text = "This is a secret"
-        TestItem = Item("Sample 0", "A sample object", weight=0, category=0, containingSecret=True)
-        TestItem.text = "Draft text"
-        TestItem.secretList = [HiddenItem1]
-       
+
+        book1 = Item("Cooking Book", "A cooking tutorial book", 1)
+        book1.text = "\nChapter 1 - How to choose fresh ingredients\nChapter 2 - How to control heat\n..."
+        book2 = Item("Sandman", "A novel", 0.6)
+        book2.text = "\nOnce upon a time, there was a powerful and kind spirit..."
+        book3 = Item("Stock Exchange", "A book about stock exchange", 0.5)
+        book3.text = "\nChapter 1 - Why should you invest in stocks ?"
+        book_with_secret = Item("Only if I could", "Sarah's favourite romance novel", 0.6)
+        book_with_secret.text = "\nSummer 1999, the last time I saw her..."
+        letter1 = Item("Letter", "A mysterious letter sent to Sarah by Valentine", 0.018)
+        letter1.text = "\nDear Sarah, ....\n...\nBest Regards, Valentine"
+        book_with_secret.contained_items = [letter1]
+        library1 = Item("Eric's library", "A small library at the couple's house", 30, False)
+        library1.contained_items = [book1, book2, book3, book_with_secret]
+
+        glass1 = Item("Glass", "A glass of wine", 0.2)
+        bottle1 = Item("Wine bottle", "A wine bottle", 1.2)
+
+        shoeprints = Item("Shoeprint", "Shoeprints of someone", 0.010)
+        shoeprints.biometricsUID = uuid4()
+
+        shoes1 = Item("Shoes 1", "Shoes model 1", 0.8)
+        shoes1.biometricsUID = uuid4()
+        shoes2 = Item("Shoes 2", "Shoes model 2", 1.2)
+        shoes2.biometricsUID = shoeprints.biometricsUID
+        shoes3 = Item("Shoes 3", "Shoes model 3", 0.9)
+        shoes3.biometricsUID = uuid4()
+        box1 = Item("Box", "A shoes box", 0.25)
+
+        couch = Item("Couch", "Neighbour's couch", 59, False)
+        plaid = Item("Plaid", "Neighbour's plaid", 0.8)
+        sarah_notebook = Item("Notebook", "A notebook belong to Sarah", 0.25)
+        sarah_notebook.text = "\n...\nSarah doesn't do sports\nSarah is divorced\nSarah is alive\n..."
+        plaid.contained_items = [sarah_notebook]
+
+        bracelet = Item("Bracelet", "Sarah's bracelet", 0.15)
+        bracelet.text = "E"
+
+        case_file1 = Item("Case 1", "A case file", 0.5)
+        case_file1.text = "Smuggler's activities"
+        case_file2 = Item("Case 2", "A case file", 0.25)
+        case_file2.text = "Armed thief"
+        sealed_case_file = Item("Sealed case file", "A sealed case file related to the murder", 0.3)
+        sealed_case_file.text = "Confidential"
+        mental_health_note = Item("Mental health note", "Eric's mental health note", 0.05)
+        mental_health_note.text = "\n...\nEric suffers severe mental disorders.\n..."
+        crime_record = Item("Crime record", "Eric's crime record", 0.05)
+        crime_record.text = "\n...\nEric attacked Mr. Wistenrsear on 25 November 2022 /" \
+                            "\nEric assaulted Ms. Linsly on 8 May 2023\n..."
+        sealed_case_file.sealed_secret = [mental_health_note, crime_record]
+        sealed_case_file.sealed_code = "1951"
+
+        
+
         # Add items to rooms inventory
-        house.inventory.items[Sarah_Journey.name] = Sarah_Journey
-        house.inventory.items[TestItem.name] = TestItem
+        library.inventory.contained_items[library1.name] = library1
+
+        bar.inventory.contained_items[glass1.name] = glass1
+        bar.inventory.contained_items[bottle1.name] = bottle1
+
+        bridge.inventory.contained_items[shoeprints.name] = shoeprints
+
+        shoes_shop.inventory.contained_items[shoes1.name] = shoes1
+        shoes_shop.inventory.contained_items[shoes2.name] = shoes2
+        shoes_shop.inventory.contained_items[shoes3.name] = shoes3
+        shoes_shop.inventory.contained_items[box1.name] = box1
+
+        police_station.inventory.contained_items[case_file1.name] = case_file1
+        police_station.inventory.contained_items[case_file2.name] = case_file2
+        police_station.inventory.contained_items[sealed_case_file.name] = sealed_case_file
 
 
         # Create PNJ
@@ -326,7 +380,6 @@ class Game:
 
         self.player = Player(input("\nEnter your name: "))
         self.player.current_room = house
-        self.player.inventory = Inventory()
 
 
     # Play the game
@@ -336,7 +389,7 @@ class Game:
         # Loop until the game is finished
         while not self.finished:
             # Get the command from the player
-            self.process_command(input("> "))
+            self.process_command(input("\n> "))
         return None
 
 
@@ -350,22 +403,65 @@ class Game:
 
         command_word = list_of_words[0]
 
+        def handler(list_of_words):
+
+            if command_word in {"take", "drop", "read", "inspect"}:
+
+                item_name = ""
+                for word in list_of_words[1:-1]:
+                    item_name += "{} ".format(word)
+                item_name += list_of_words[-1] 
+                list_of_words = [list_of_words[0]] + [item_name]
+            
+            elif command_word == "compare":
+
+                separator_index = list_of_words.index("and")
+
+                item1_name = ""
+                for word in list_of_words[1:separator_index - 1]:
+                    item1_name += "{} ".format(word)
+                item1_name += list_of_words[separator_index - 1]
+
+                item2_name = ""
+                for word in list_of_words[separator_index + 1:- 1]:
+                    item2_name += "{} ".format(word)
+                item2_name += list_of_words[- 1]
+
+                list_of_words = [list_of_words[0]] + [item1_name] + [item2_name]
+
+            elif command_word == "unseal":
+
+                separator_index = list_of_words.index("with")
+
+                item_name = ""
+                for word in list_of_words[1:separator_index - 1]:
+                    item_name += "{} ".format(word)
+                item_name += list_of_words[separator_index - 1]
+
+                code = ""
+                for word in list_of_words[separator_index + 1:- 1]:
+                    code += "{} ".format(word)
+                code += list_of_words[- 1]
+
+                list_of_words = [list_of_words[0]] + [item_name] + [code]
+
+            command = self.commands[command_word]
+            command.action(self, list_of_words, command.number_of_parameters)
 
         # Only handle the command if it is not empty  
         if command_word != "":
             # If the command is not recognized, print an error message
             if command_word not in self.commands.keys():
-                print(f"\nUnrecognized '{command_word}' command. Type 'help' for possible commands.\n")
+                print(f"\nUnrecognized '{command_word}' command. Type 'help' for possible commands.")
             # If the command is recognized, execute it
             else:
-                command = self.commands[command_word]
-                command.action(self, list_of_words, command.number_of_parameters)
+                handler(list_of_words)
 
 
     # Print the welcome message
     def print_welcome(self):
         print(f"\nWelcome player {self.player.name}!")
-        print(f"In this world, you are Eric.")
+        print(f"\nIn this world, you are Eric.")
         print(f"Let's uncover the truth about your wife's death!")
         print("\nType 'help' to for possible commands.")
 
